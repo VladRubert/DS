@@ -35,13 +35,17 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
+      # 👇 instala el plugin faltante (y otros comunes por si tu tailwind.config los usa)
+      - name: Install Tailwind plugins (missing)
+        run: npm install -D @tailwindcss/aspect-ratio @tailwindcss/forms @tailwindcss/typography @tailwindcss/container-queries
+
       - name: Build
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.PROJECT_DIR }}/dist  # Vite genera 'dist'
+          path: ${{ env.PROJECT_DIR }}/dist
 
   deploy:
     needs: build
