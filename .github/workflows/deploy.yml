@@ -2,8 +2,8 @@ name: Deploy Vite site to GitHub Pages
 
 on:
   push:
-    branches: [ main ]   # publica cuando subas cambios a main
-  workflow_dispatch:      # permite ejecutarlo a mano
+    branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,9 +14,15 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  PROJECT_DIR: Portfolio   # <- tu carpeta con package.json
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.PROJECT_DIR }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,7 +41,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist   # Vite genera 'dist'
+          path: ${{ env.PROJECT_DIR }}/dist  # Vite genera 'dist'
 
   deploy:
     needs: build
