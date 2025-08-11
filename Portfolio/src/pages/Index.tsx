@@ -244,7 +244,7 @@ export default function Portfolio() {
                   title="Ecommerce — Order & Supply Chain (Power BI)"
                   description="Panel interactivo con flujo de pedidos, inventarios y cadena de suministro."
                   src="https://app.powerbi.com/reportEmbed?reportId=9327d647-be24-4e79-af83-37df7ecf036c&autoAuth=true&ctid=f0661e9b-ec4f-455a-ae94-38981c278caf"
-                  tags={['BI', 'Power BI', 'Supply Chain']}
+                  tags={['BI', 'Power BI', 'Supply Chain', 'Data Analysis']}
                 />
               </div>
             </TabsContent>
