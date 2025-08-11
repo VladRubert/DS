@@ -1,23 +1,72 @@
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ProjectCard, Project } from '@/components/ProjectCard';
-import { SkillItem } from '@/components/SkillItem';
-import { projects } from '@/lib/projects';
+import { useState } from 'react'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ProjectCard } from '@/components/ProjectCard'
+import { SkillItem } from '@/components/SkillItem'
+import { projects } from '@/lib/projects'
+
+/** Tarjeta simple para incrustar un reporte de Power BI (responsive, con etiquetas) */
+function PowerBICard({
+  title,
+  description,
+  src,
+  tags = [],
+}: {
+  title: string
+  description?: string
+  src: string
+  tags?: string[]
+}) {
+  return (
+    <div className="rounded-xl bg-slate-700/50 backdrop-blur-sm overflow-hidden shadow-lg border border-slate-700">
+      <div className="p-5">
+        <h3 className="text-xl font-semibold">{title}</h3>
+        {description && (
+          <p className="mt-1 text-sm text-slate-300">{description}</p>
+        )}
+        {tags?.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {tags.map((t) => (
+              <span
+                key={t}
+                className="inline-flex items-center rounded-full border border-slate-600 px-2.5 py-0.5 text-xs text-slate-200"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Contenedor responsive 16:9 sin depender de plugins */}
+      <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
+        <iframe
+          title={title}
+          src={src}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="absolute inset-0 h-full w-full border-0"
+        />
+      </div>
+
+      <div className="p-4 text-xs text-slate-400">
+        *El reporte es interactivo. Si no carga, revisa que esté publicado en Power BI
+        como “Publicar en la web”.
+      </div>
+    </div>
+  )
+}
 
 export default function Portfolio() {
-  // State for active section
-  const [activeSection, setActiveSection] = useState<string>('home');
+  const [activeSection, setActiveSection] = useState<string>('home')
 
-  // Scroll to section handler
   const scrollToSection = (section: string) => {
-    setActiveSection(section);
-    const element = document.getElementById(section);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    setActiveSection(section)
+    const el = document.getElementById(section)
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white">
@@ -35,10 +84,10 @@ export default function Portfolio() {
                     <Button
                       variant="link"
                       className={cn(
-                        "text-sm font-medium transition-colors",
-                        activeSection === item 
-                          ? "text-blue-400" 
-                          : "text-slate-200 hover:text-blue-300"
+                        'text-sm font-medium transition-colors',
+                        activeSection === item
+                          ? 'text-blue-400'
+                          : 'text-slate-200 hover:text-blue-300'
                       )}
                       onClick={() => scrollToSection(item)}
                     >
@@ -79,14 +128,14 @@ export default function Portfolio() {
                 Transformando datos en soluciones significativas para problemas económicos y empresariales complejos.
               </p>
               <div className="pt-4 flex space-x-4">
-                <Button 
+                <Button
                   onClick={() => scrollToSection('projects')}
                   className="bg-blue-500 hover:bg-blue-600 text-white"
                 >
                   Ver proyectos
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => scrollToSection('contact')}
                   className="border-blue-400 text-blue-400 hover:bg-blue-400/10"
                 >
@@ -99,7 +148,18 @@ export default function Portfolio() {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-teal-400 blur-2xl opacity-20"></div>
                 <div className="absolute inset-4 bg-slate-800 rounded-full"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="60%" height="60%" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="60%"
+                    height="60%"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-blue-400"
+                  >
                     <circle cx="12" cy="12" r="10"></circle>
                     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                     <path d="M2 12h20"></path>
@@ -118,15 +178,15 @@ export default function Portfolio() {
             <h2 className="text-3xl font-bold mb-6">Sobre Mí</h2>
             <div className="bg-slate-700/50 rounded-xl p-6 backdrop-blur-sm">
               <p className="text-slate-300 mb-4">
-                Soy un especialista apasionado por el análisis de datos y la economía. Con experiencia en transformar datos 
+                Soy un especialista apasionado por el análisis de datos y la economía. Con experiencia en transformar datos
                 complejos en insights accionables y soluciones efectivas.
               </p>
               <p className="text-slate-300 mb-4">
-                Mi formación en economía me permite entender los contextos de negocio, mientras que mis habilidades 
+                Mi formación en economía me permite entender los contextos de negocio, mientras que mis habilidades
                 en ciencia de datos me dan las herramientas para extraer conocimiento valioso y construir modelos predictivos.
               </p>
               <p className="text-slate-300">
-                Me especializo en proyectos que combinan análisis econométricos, visualización de datos 
+                Me especializo en proyectos que combinan análisis econométricos, visualización de datos
                 y modelos de machine learning para resolver problemas del mundo real.
               </p>
             </div>
@@ -138,8 +198,8 @@ export default function Portfolio() {
       <section id="projects" className="py-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8 text-center">Proyectos</h2>
-          
-          <Tabs defaultValue="all" className="max-w-4xl mx-auto">
+
+          <Tabs defaultValue="all" className="max-w-6xl mx-auto">
             <div className="flex justify-center mb-8">
               <TabsList className="bg-slate-700/50 backdrop-blur-sm">
                 <TabsTrigger value="all">Todos</TabsTrigger>
@@ -148,36 +208,55 @@ export default function Portfolio() {
                 <TabsTrigger value="economics">Economía</TabsTrigger>
               </TabsList>
             </div>
-            
+
+            {/* Todos */}
             <TabsContent value="all">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.map(project => (
+                {projects.map((project) => (
                   <ProjectCard key={project.id} project={project} />
                 ))}
               </div>
             </TabsContent>
-            
+
+            {/* Ciencia de Datos */}
             <TabsContent value="data-science">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.filter(p => p.category === 'data-science').map(project => (
-                  <ProjectCard key={project.id} project={project} />
-                ))}
+                {projects
+                  .filter((p) => p.category === 'data-science')
+                  .map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                  ))}
               </div>
             </TabsContent>
-            
+
+            {/* Análisis de Datos (incluye BI) */}
             <TabsContent value="data-analysis">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.filter(p => p.category === 'data-analysis').map(project => (
-                  <ProjectCard key={project.id} project={project} />
-                ))}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Tarjetas “normales” que tengas configuradas */}
+                {projects
+                  .filter((p) => p.category === 'data-analysis')
+                  .map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                  ))}
+
+                {/* === Power BI embed === */}
+                <PowerBICard
+                  title="Ecommerce — Order & Supply Chain (Power BI)"
+                  description="Panel interactivo con flujo de pedidos, inventarios y cadena de suministro."
+                  src="https://app.powerbi.com/reportEmbed?reportId=9327d647-be24-4e79-af83-37df7ecf036c&autoAuth=true&ctid=f0661e9b-ec4f-455a-ae94-38981c278caf"
+                  tags={['BI', 'Power BI', 'Supply Chain']}
+                />
               </div>
             </TabsContent>
-            
+
+            {/* Economía */}
             <TabsContent value="economics">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {projects.filter(p => p.category === 'economics').map(project => (
-                  <ProjectCard key={project.id} project={project} />
-                ))}
+                {projects
+                  .filter((p) => p.category === 'economics')
+                  .map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                  ))}
               </div>
             </TabsContent>
           </Tabs>
@@ -188,8 +267,8 @@ export default function Portfolio() {
       <section id="skills" className="py-24 bg-slate-800/50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">Habilidades</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* Data Science Skills */}
             <div className="bg-slate-700/50 backdrop-blur-sm p-6 rounded-lg">
               <h3 className="text-xl font-bold mb-4 text-blue-400">Ciencia de Datos</h3>
@@ -201,7 +280,7 @@ export default function Portfolio() {
                 <SkillItem name="Big Data" level={80} />
               </ul>
             </div>
-            
+
             {/* Data Analysis Skills */}
             <div className="bg-slate-700/50 backdrop-blur-sm p-6 rounded-lg">
               <h3 className="text-xl font-bold mb-4 text-teal-400">Análisis de Datos</h3>
@@ -213,7 +292,7 @@ export default function Portfolio() {
                 <SkillItem name="Excel Avanzado" level={90} />
               </ul>
             </div>
-            
+
             {/* Economics Skills */}
             <div className="bg-slate-700/50 backdrop-blur-sm p-6 rounded-lg">
               <h3 className="text-xl font-bold mb-4 text-indigo-400">Economía</h3>
@@ -233,12 +312,12 @@ export default function Portfolio() {
       <section id="contact" className="py-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">Contacto</h2>
-          
+
           <div className="max-w-lg mx-auto bg-slate-700/50 backdrop-blur-sm p-8 rounded-lg">
             <p className="text-slate-300 mb-6 text-center">
               ¿Interesado en colaborar o tienes alguna pregunta? ¡Contáctame!
             </p>
-            
+
             <div className="space-y-4">
               <div className="flex items-center p-3 bg-slate-600/50 rounded-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-400 mr-3">
@@ -261,33 +340,26 @@ export default function Portfolio() {
                 <span>Ciudad, País</span>
               </div>
             </div>
-            
+
             <div className="mt-8 flex justify-center space-x-6">
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                <span className="sr-only">LinkedIn</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                  <rect x="2" y="9" width="4" height="12"></rect>
-                  <circle cx="4" cy="4" r="2"></circle>
-                </svg>
+              {/* Links sociales */}
+              <a href="#" className="hover:text-blue-400 transition-colors" aria-label="LinkedIn">
+                {/* …icon… */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
               </a>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                <span className="sr-only">GitHub</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                </svg>
+              <a href="#" className="hover:text-blue-400 transition-colors" aria-label="GitHub">
+                {/* …icon… */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
               </a>
-              <a href="#" className="hover:text-blue-400 transition-colors">
-                <span className="sr-only">Twitter</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                </svg>
+              <a href="#" className="hover:text-blue-400 transition-colors" aria-label="Twitter">
+                {/* …icon… */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
               </a>
             </div>
           </div>
         </div>
       </section>
-      
+
       {/* Footer */}
       <footer className="py-8 bg-slate-900 text-center text-slate-400">
         <div className="container mx-auto px-4">
@@ -296,5 +368,5 @@ export default function Portfolio() {
         </div>
       </footer>
     </div>
-  );
+  )
 }
